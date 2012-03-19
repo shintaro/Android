@@ -66,7 +66,8 @@ public class TetheringTimer extends Activity {
         if (tetheringTimerService == null || tetheringTimerService.isTimerRunning())
         	button.setText("Stop");
         button.setOnClickListener(new View.OnClickListener() {        	
-            public void onClick(View view) {
+            @Override
+			public void onClick(View view) {
             	if (tetheringTimerService.isTimerRunning()) {
             		tetheringTimerService.stopTimer();
             		button.setText("Start");

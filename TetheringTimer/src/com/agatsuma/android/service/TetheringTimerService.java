@@ -79,6 +79,7 @@ public class TetheringTimerService extends Service {
 		timer = new Timer();
 		if (isTetheringOn) {
 			TimerTask timerTask = new TimerTask() {
+				@Override
 				public void run() {
 					sendBroadcast(new Intent(ACTION_OFF));
 					isTetheringOn = !isTetheringOn;
@@ -88,6 +89,7 @@ public class TetheringTimerService extends Service {
 			timer.schedule(timerTask, onCycle);		
 		} else {
 			TimerTask timerTask = new TimerTask() {
+				@Override
 				public void run() {
 					sendBroadcast(new Intent(ACTION_ON));
 					isTetheringOn = !isTetheringOn;
