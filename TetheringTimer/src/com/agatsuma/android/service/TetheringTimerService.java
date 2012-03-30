@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
@@ -17,18 +18,21 @@ public class TetheringTimerService extends Service {
 		}
 	}
 
+
     public static final String ACTION_ON = "Tethering Timer Service";
     public static final String ACTION_OFF = "Tethering Timer Service";
 	private boolean isTetheringOn = false;
 	private long onCycle, offCycle;
 	private Timer timer;
+	private WifiApEnabler wp;
+	private final Context context = this;
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		Toast toast = Toast.makeText(getApplicationContext(), "onCreate()", Toast.LENGTH_SHORT);
 		toast.show();
-		
+		wp = new WifiApEnabler(context);
 	}
 	
 	@Override
@@ -83,6 +87,7 @@ public class TetheringTimerService extends Service {
 				public void run() {
 					sendBroadcast(new Intent(ACTION_OFF));
 					isTetheringOn = !isTetheringOn;
+					wp.setWifiApDisabled();
 					schedule(onCycle, offCycle);
 				}
 			};
@@ -93,6 +98,7 @@ public class TetheringTimerService extends Service {
 				public void run() {
 					sendBroadcast(new Intent(ACTION_ON));
 					isTetheringOn = !isTetheringOn;
+					wp.setWifiApEnabled(true);
 					schedule(onCycle, offCycle);
 				}
 			};

@@ -21,7 +21,7 @@ public class TetheringTimer extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			String str;
 			if (tetheringTimerService.isTetheringOn())
-				str = "Tethring On";
+				str = "Tethering On";
 			else
 				str = "Tethering Off";
 			Toast toast = Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT);
@@ -32,6 +32,9 @@ public class TetheringTimer extends Activity {
 	
 	private TetheringTimerService tetheringTimerService;
 	private final TetheringTimerReceiver receiver = new TetheringTimerReceiver();
+	TimePicker timePickerOn;
+	TimePicker timePickerOff;
+	Button button;
 
 	private ServiceConnection serviceConnection =  new ServiceConnection() {
 		@Override
@@ -50,21 +53,20 @@ public class TetheringTimer extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-        final TimePicker timePickerOn = (TimePicker)findViewById(R.id.timePickerOn);
+        timePickerOn = (TimePicker)findViewById(R.id.timePickerOn);
         timePickerOn.setIs24HourView(true);
         timePickerOn.setCurrentHour(0);
         timePickerOn.setCurrentMinute(10);
         
-        final TimePicker timePickerOff = (TimePicker)findViewById(R.id.timePickerOff);
+        timePickerOff = (TimePicker)findViewById(R.id.timePickerOff);
         timePickerOff.setIs24HourView(true);
         timePickerOff.setCurrentHour(0);
         timePickerOff.setCurrentMinute(10);
 
-        
-        
-        final Button button = (Button)findViewById(R.id.button1);
-        if (tetheringTimerService == null || tetheringTimerService.isTimerRunning())
-        	button.setText("Stop");
+        button = (Button)findViewById(R.id.button1);
+        if (tetheringTimerService != null)
+        	if (tetheringTimerService.isTimerRunning())
+        		button.setText("Stop");
         button.setOnClickListener(new View.OnClickListener() {        	
             @Override
 			public void onClick(View view) {
@@ -82,7 +84,7 @@ public class TetheringTimer extends Activity {
             	}
             }
         });
-
+        
         Intent intent = new Intent(this, TetheringTimerService.class);
         startService(intent);
         IntentFilter filter1 = new IntentFilter(TetheringTimerService.ACTION_ON);
@@ -94,6 +96,11 @@ public class TetheringTimer extends Activity {
 
         unbindService(serviceConnection);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+	}
+	
+	@Override
+	public void onStart() {
+
 	}
 	
 	@Override
