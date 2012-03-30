@@ -158,3 +158,17 @@ public class TetheringTimer2Activity extends Activity {
 		am2.cancel(sender);
     }
 }
+
+/*
+//make the object
+Object wimaxManager = (Object)getBaseContext().getSystemService("wimax");
+
+//declare the method
+Method setWimaxEnabled = wimaxManager.getClass().getMethod("setWimaxEnabled", new Class[] { Boolean.TYPE });
+
+//turn it on
+setWimaxEnabled.invoke(wimaxManager, new Object[] { Boolean.TRUE });
+
+//turn it off
+setWimaxEnabled.invoke(wimaxManager, new Object[] { Boolean.FALSE });
+*/
